@@ -1,0 +1,37 @@
+{
+	"comment": "",
+	"ignore": "test",
+	"package": [
+		{
+			"checksumSHA1": "mq7Np3rIjHnE06Of949JjXdU/Rk=",
+			"path": "github.com/btcsuite/btcd/btcec",
+			"revision": "2be2f12b358dc57d70b8f501b00be450192efbc3",
+			"revisionTime": "2018-02-20T00:36:29Z"
+		},
+		{
+			"checksumSHA1": "UyE/zzupdUo8ZK7w8d8In++s7SQ=",
+			"path": "github.com/ethereum/go-ethereum/common",
+			"revision": "423c8bb1d8210387944e379a5f151c5ff4b8803f",
+			"revisionTime": "2018-02-23T17:02:51Z"
+		},
+		{
+			"checksumSHA1": "tMtGtURWx29lWZYsLtLOQaPvGqs=",
+			"path": "github.com/ethereum/go-ethereum/common/hexutil",
+			"revision": "423c8bb1d8210387944e379a5f151c5ff4b8803f",
+			"revisionTime": "2018-02-23T17:02:51Z"
+		},
+		{
+			"checksumSHA1": "pQzUVRi0z/3Z4FpRyExSg1ROLSA=",
+			"path": "github.com/ethereum/go-ethereum/crypto/sha3",
+			"revision": "423c8bb1d8210387944e379a5f151c5ff4b8803f",
+			"revisionTime": "2018-02-23T17:02:51Z"
+		},
+		{
+			"checksumSHA1": "f2Asra5yXCMDxwx/TF6m4h3ZqOw=",
+			"path": "github.com/ethereum/go-ethereum/rlp",
+			"revision": "423c8bb1d8210387944e379a5f151c5ff4b8803f",
+			"revisionTime": "2018-02-23T17:02:51Z"
+		}
+	],
+	"rootPath": "github.com/tcphilips/SignTx"
+}
