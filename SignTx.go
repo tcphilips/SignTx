@@ -2,7 +2,6 @@ package main
 
 import (
 	"C"
-	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"math/big"
@@ -81,18 +80,13 @@ func SignTxWithPrivKey(txJson, privKey *C.char) *C.char {
 }
 
 func signTxWithPrivKey(txJson, privKey string) (string, error) {
-	tx := []byte(txJson)
 	var data txdata
-	err := json.Unmarshal(tx, &data)
+	err := json.Unmarshal([]byte(txJson), &data)
 	if err != nil {
 		return "", err
 	}
 
-	keyBytes, err := hex.DecodeString(privKey)
-	if err != nil {
-		return "", err
-	}
-	prv, _ := btcec.PrivKeyFromBytes(btcec.S256(), keyBytes)
+	prv, _ := btcec.PrivKeyFromBytes(btcec.S256(), common.FromHex(privKey))
 
 	sig, err := sign(data.Hash(), prv)
 	if err != nil {
