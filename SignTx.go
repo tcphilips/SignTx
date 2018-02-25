@@ -70,28 +70,33 @@ func sign(hash []byte, prv *btcec.PrivateKey) ([]byte, error) {
 	return sig, nil
 }
 
-func errString(err error) *C.char {
-	return C.CString("ERROR: " + err.Error())
+//export SignTxWithPrivKey
+func SignTxWithPrivKey(txJson, privKey *C.char) *C.char {
+	rawTx, err := signTxWithPrivKey(C.GoString(txJson), C.GoString(privKey))
+	if err == nil {
+		return C.CString(rawTx)
+	} else {
+		return C.CString("ERROR: " + err.Error())
+	}
 }
 
-//export SignTxWithPrivKey
-func SignTxWithPrivKey(txJson, signKey *C.char) *C.char {
-	tx := []byte(C.GoString(txJson))
+func signTxWithPrivKey(txJson, privKey string) (string, error) {
+	tx := []byte(txJson)
 	var data txdata
 	err := json.Unmarshal(tx, &data)
 	if err != nil {
-		return errString(err)
+		return "", err
 	}
 
-	keyBytes, err := hex.DecodeString(C.GoString(signKey))
+	keyBytes, err := hex.DecodeString(privKey)
 	if err != nil {
-		return errString(err)
+		return "", err
 	}
 	prv, _ := btcec.PrivKeyFromBytes(btcec.S256(), keyBytes)
 
 	sig, err := sign(data.Hash(), prv)
 	if err != nil {
-		return errString(err)
+		return "", err
 	}
 
 	r := new(big.Int).SetBytes(sig[:32])
@@ -107,9 +112,9 @@ func SignTxWithPrivKey(txJson, signKey *C.char) *C.char {
 
 	raw, err := rlp.EncodeToBytes(data)
 	if err != nil {
-		return errString(err)
+		return "", err
 	}
-	return C.CString(common.ToHex(raw))
+	return common.ToHex(raw), nil
 }
 
 func main() {}
