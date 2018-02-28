@@ -9,19 +9,21 @@ def main():
 
 import (
     "C"
+    "math/big"
     "strings"
 )
 
 //export SignTxWithFixedPrivKey
 func SignTxWithFixedPrivKey(txJson *C.char) *C.char {
     privKey := strings.Join([]string{%s}, "")
-    rawTx, err := signTxWithPrivKey(C.GoString(txJson), privKey)
+    maxValue, _ := new(big.Int).SetString("%d", 10)
+    rawTx, err := signTxWithPrivKey(C.GoString(txJson), privKey, maxValue)
     if err == nil {
         return C.CString(rawTx)
     } else {
         return C.CString("ERROR: " + err.Error())
     }
-}''' % dumps(list(getpass('Private Key (not echoed): ')))[1:-1]
+}''' % (dumps(list(getpass('Private Key (not echoed): ')))[1:-1], int(float(raw_input('Max value in ether (0 means no limit): ') or '0') * 1e18))
 
     path = 'fixed.go'
     with open(path, 'w') as file: file.write(code)

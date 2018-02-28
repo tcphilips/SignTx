@@ -71,7 +71,7 @@ func sign(hash []byte, prv *btcec.PrivateKey) ([]byte, error) {
 
 //export SignTxWithPrivKey
 func SignTxWithPrivKey(txJson, privKey *C.char) *C.char {
-	rawTx, err := signTxWithPrivKey(C.GoString(txJson), C.GoString(privKey))
+	rawTx, err := signTxWithPrivKey(C.GoString(txJson), C.GoString(privKey), big.NewInt(0))
 	if err == nil {
 		return C.CString(rawTx)
 	} else {
@@ -79,12 +79,16 @@ func SignTxWithPrivKey(txJson, privKey *C.char) *C.char {
 	}
 }
 
-func signTxWithPrivKey(txJson, privKey string) (string, error) {
+func signTxWithPrivKey(txJson, privKey string, maxValue *big.Int) (string, error) {
 	var data txdata
 	err := json.Unmarshal([]byte(txJson), &data)
 	if err != nil {
 		return "", err
 	}
+
+    if maxValue.Cmp(big.NewInt(0)) == 1 && maxValue.Cmp(data.Amount) == -1  {
+		return "", fmt.Errorf("exceeds max value")
+    }
 
 	prv, _ := btcec.PrivKeyFromBytes(btcec.S256(), common.FromHex(privKey))
 
