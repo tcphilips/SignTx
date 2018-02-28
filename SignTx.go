@@ -86,9 +86,9 @@ func signTxWithPrivKey(txJson, privKey string, maxValue *big.Int) (string, error
 		return "", err
 	}
 
-    if maxValue.Cmp(big.NewInt(0)) == 1 && maxValue.Cmp(data.Amount) == -1  {
+	if maxValue.Cmp(big.NewInt(0)) == 1 && maxValue.Cmp(data.Amount) == -1  {
 		return "", fmt.Errorf("exceeds max value")
-    }
+	}
 
 	prv, _ := btcec.PrivKeyFromBytes(btcec.S256(), common.FromHex(privKey))
 
