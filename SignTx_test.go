@@ -1,6 +1,7 @@
 package main
 
 import (
+	"math/big"
 	"testing"
 )
 
@@ -24,7 +25,7 @@ func Test_signTxWithPrivKey(t *testing.T) {
 }
 `
 	privKey := "b0e565021eb427c1f71b810de4c8916ba478b5f6c9d339824c3e8b98f61762cb"
-	rawTx, err := signTxWithPrivKey(txJson, privKey)
+	rawTx, err := signTxWithPrivKey(txJson, privKey, big.NewInt(0))
 	if err != nil {
 		t.Error(err)
 	} else if rawTx != expected {

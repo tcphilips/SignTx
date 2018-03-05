@@ -86,7 +86,7 @@ func signTxWithPrivKey(txJson, privKey string, maxValue *big.Int) (string, error
 		return "", err
 	}
 
-	if maxValue.Cmp(big.NewInt(0)) == 1 && maxValue.Cmp(data.Amount) == -1  {
+	if data.Amount != nil && maxValue.Cmp(big.NewInt(0)) == 1 && maxValue.Cmp(data.Amount) == -1  {
 		return "", fmt.Errorf("exceeds max value")
 	}
 
@@ -101,7 +101,7 @@ func signTxWithPrivKey(txJson, privKey string, maxValue *big.Int) (string, error
 	s := new(big.Int).SetBytes(sig[32:64])
 	v := new(big.Int).SetBytes([]byte{sig[64] + 27})
 
-	if data.ChainId.Sign() != 0 {
+	if data.ChainId != nil && data.ChainId.Sign() != 0 {
 		v = big.NewInt(int64(sig[64] + 35))
 		v.Add(v, new(big.Int).Mul(data.ChainId, big.NewInt(2)))
 	}
